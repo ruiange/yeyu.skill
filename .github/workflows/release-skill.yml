@@ -1,0 +1,59 @@
+name: Release Skill Package
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  package-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build skill package
+        id: package
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          REPO_NAME="夜雨"
+          SHORT_SHA="${GITHUB_SHA::7}"
+          STAGING_DIR="$(mktemp -d)"
+          PACKAGE_ROOT="${STAGING_DIR}/${REPO_NAME}"
+
+          mkdir -p "${PACKAGE_ROOT}"
+
+          rsync -av \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '.idea' \
+            ./ "${PACKAGE_ROOT}/"
+
+          mkdir -p dist
+          ZIP_NAME="${REPO_NAME}-${SHORT_SHA}.zip"
+
+          (
+            cd "${STAGING_DIR}"
+            zip -r "${GITHUB_WORKSPACE}/dist/${ZIP_NAME}" "${REPO_NAME}"
+          )
+
+          echo "zip_path=dist/${ZIP_NAME}" >> "${GITHUB_OUTPUT}"
+          echo "zip_name=${ZIP_NAME}" >> "${GITHUB_OUTPUT}"
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Build #${{ github.run_number }}
+          body: |
+            Automated skill package for `夜雨`.
+
+            Commit: `${{ github.sha }}`
+          files: ${{ steps.package.outputs.zip_path }}

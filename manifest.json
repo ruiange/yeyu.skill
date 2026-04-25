@@ -1,0 +1,32 @@
+{
+  "name": "write-like-yeyu",
+  "display_name": "夜雨.skill",
+  "description": "A portable Chinese group-chat persona package for generating Yeyu-style replies: game-literate, reality-aware, emotionally analytical, and capable of long-form internet-native monologues.",
+  "language": "zh-CN",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "tags": [
+    "persona",
+    "prompt",
+    "chat-style",
+    "wechat",
+    "chinese",
+    "group-chat",
+    "codex-skill"
+  ],
+  "targets": [
+    "Codex",
+    "ChatGPT",
+    "Claude",
+    "Cursor",
+    "Cline",
+    "Continue",
+    "Cherry Studio"
+  ],
+  "entrypoints": {
+    "codex_skill": "SKILL.md",
+    "persona": "persona.md",
+    "prompt": "prompt.txt"
+  },
+  "repository": "https://github.com/ruiangeStudio/yeyu.skill"
+}

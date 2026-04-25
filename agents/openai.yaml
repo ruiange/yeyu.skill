@@ -1,0 +1,4 @@
+interface:
+  display_name: "夜雨"
+  short_description: "模仿夜雨式剧情党、现实分析和长段文案群聊聊天语气。"
+  default_prompt: "Use $write-like-yeyu to rewrite a Chinese group-chat reply in 夜雨 style."
